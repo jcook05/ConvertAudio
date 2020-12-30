@@ -4,7 +4,6 @@ import sys
 import random
 from optparse import OptionParser
 
-
 title = ""
 artist = ""
 album = ""
@@ -29,7 +28,6 @@ def setAttributes(metapath):
    for line in lines:
     strline = str(line)
     strline = s = strline.rstrip(os.linesep)
-  
     if "title" in strline:
       title = strline.split("=")[1][:-3]
       print(title)
@@ -39,7 +37,6 @@ def setAttributes(metapath):
     if "album" in strline:
       album = strline.split("=")[1][:-3]
       print(album)
-
 
 #Main
 if __name__=="__main__":   
@@ -57,14 +54,11 @@ if __name__=="__main__":
     if (args.targetdir is None):
        parser.error("no targetdir specified")
 
-
 d = args.targetdir
 m = args.metadir
 i = args.musicdir
-
 files = []
 filenames = []
-
 
 # Get a list of .m4a and .mp3 files from target dir.  Target dir should be where your
 # Ipod or Itunes music is stored. 
@@ -76,23 +70,17 @@ for r, d, f in os.walk(d):
             files.append(os.path.join(r, file))
 
 for f in files:
-   
     last = f.split('/')[-1][:-4]
-    
     if last in filenames:
-       last = last + str(random.randint(1,100))
-    
+       last = last + str(random.randint(1,100)) 
     filenames.append(last)
-
     filepath = m + "/" + last
     metapath = m + "/" + last + ".txt"
-    
     if os.path.isfile(metapath):
       setAttributes(metapath)
     else:
       getMetaData(f, metapath)
       setAttributes(metapath)
-
     artistdir = i + "/" + artist.replace(".", "")
     print(artistdir)
     albumdir = artistdir + "/" + album.replace(".", "")
@@ -106,7 +94,6 @@ for f in files:
       print(albumdir)
       print(command)
       os.system(command)
-    
     command = "ffmpeg -y -i " + f +  " -acodec copy " + "\"" + albumdir + "/" + title.replace(" ", "") + ".aac"+ "\""
     print(command)
     os.system(command)
